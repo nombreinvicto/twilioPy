@@ -19,12 +19,12 @@ transcribeErrorMessage = r"""
                     <Say voice="man">Transcribe Error. Access Denied. Try Again</Say>
                 </Response>"""
 
-noSpeechInRecordResponse = r"""
+noSpeechInRecordMessage = r"""
                 <Response>
                     <Say voice="man">No voice detected</Say>
                 </Response>"""
 
-debugResponse = r"""
+debugMessage = r"""
                 <Response>
                     <Say voice="man">This is Debug Response.</Say>
                 </Response>"""

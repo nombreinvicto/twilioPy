@@ -1,18 +1,14 @@
 import json, requests, base64
+from typing import Dict, Any, Union
 
 
 class SpeechRequest:
+    data: Dict[str, Union[Dict[Any, Union[str, int]], Dict[Any, str]]]
+
     def __init__(self):
-        self.data = {
-            'config': {
-                'encoding': '',
-                'sampleRateHertz': 0,
-                'languageCode': ''
-            },
-            'audio': {
-                'content': '',
-            }
-        }
+        self.data = dict(
+            config=dict(encoding='', sampleRateHertz=0, languageCode=''),
+            audio=dict(content=''))
 
     def populateSpeechObject(self, encoding: str, sampleRateHertz: int, languageCode: str, byteRecording):
         self.data['config']['encoding'] = encoding
