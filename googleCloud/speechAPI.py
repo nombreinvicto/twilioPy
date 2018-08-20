@@ -21,7 +21,7 @@ class SpeechRequest:
         self.data['audio']['content'] = (str(base64.b64encode(byteRecording)))[2:-1]
 
 
-def transcribe(encoding: str, sampleRateHertz: int, languageCode: str, byteRecording, speechURL: str):
+def transcribe(encoding: str, sampleRateHertz: int, languageCode: str, byteRecording, speechURL: str) -> dict:
     speechReq = SpeechRequest()
     speechReq.populateSpeechObject(encoding, sampleRateHertz, languageCode, byteRecording)
 

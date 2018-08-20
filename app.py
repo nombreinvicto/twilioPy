@@ -1,6 +1,7 @@
 import requests, os
 from flask import Flask, Response, request
-from twilio.messages import welcomeMessage, comeInMessage, goAwayMessage, transcribeErrorMessage, debugResponse
+from twilio.messages import welcomeMessage, comeInMessage, goAwayMessage, transcribeErrorMessage, debugResponse, \
+    noSpeechInRecordResponse
 from googleCloud.speechAPI import transcribe
 
 speechURL = "https://speech.googleapis.com/v1/speech:recognize?key=" + os.environ['apiKey']
@@ -24,13 +25,15 @@ def handleTwilioCall():
             replyFromGoogleApi = transcribe(encoding="LINEAR16", sampleRateHertz=8000, languageCode="en-US",
                                             byteRecording=byteRecording, speechURL=speechURL)
 
-            passcode = replyFromGoogleApi['results'][0]['alternatives'][0]['transcript']
-            print(passcode)
+            if replyFromGoogleApi.get('results', None) != None:
+                passcode = replyFromGoogleApi['results'][0]['alternatives'][0]['transcript']
+                if passcode == os.environ['passcode']:
+                    response = Response(response=comeInMessage, mimetype='text/xml')
+                else:
+                    response = Response(response=goAwayMessage, mimetype='text/xml')
 
-            if passcode == os.environ['passcode']:
-                response = Response(response=comeInMessage, mimetype='text/xml')
             else:
-                response = Response(response=goAwayMessage, mimetype='text/xml')
+                response = Response(response=noSpeechInRecordResponse, mimetype='text/xml')
 
     return response
 
